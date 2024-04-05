@@ -1,29 +1,26 @@
+import webcam_feed
+import tensorflow_datasets
 import cv2
 
+def main():
+    capture = webcam_feed.startCapture()
 
-capture = cv2.Videocapture(0)
+    if capture is not None:
+        while True:
+            frame = webcam_feed.getFrame(capture)
+            if frame is None:
+                break
+            
+            # Display the frame
+            cv2.imshow('Webcam Feed', frame)
 
-# Check if the camera opened successfully
-if not capture.isOpened():
-    print("Error: Could not open camera.")
-    exit()
+            # Break the loop when 'q' is pressed
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
-# Continuously capture frames from the camera
-while True:
-    ret, frame = capture.read()
+        webcam_feed.stopCapture(capture)
+        cv2.destroyAllWindows()
 
-    # If frame is read correctly, ret is True
-    if not ret:
-        print("Error: Can't receive frame (stream end?). Exiting ...")
-        break
 
-    # Display the resulting frame
-    cv2.imshow('Webcam', frame)
-
-    # Break the loop when 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# When everything done, release the capture
-capture.release()
-cv2.destroyAllWindows()
+if __name__ == '__main__':
+    main()
