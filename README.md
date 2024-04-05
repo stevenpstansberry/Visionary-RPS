@@ -11,8 +11,11 @@ Ensure requirements are fufilled
 
 ## Requirements
 
-openCV for python is required
+* openCV for python is required for gesture recogniton
+* tensorflow is required for acquisition of training sets
+
 
 ```sh
 pip3 install opencv-python
+pip3 install tensorflow
 ```
