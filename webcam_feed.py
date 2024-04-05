@@ -1,30 +1,42 @@
+# webcam_feed.py handles the activation of the webcam
+
+
 import cv2
 
-
-
-def startCapture(capture):
-
-    # Check if the camera opened successfully
-    if not capture.isOpened():
+def startCapture():
+    """
+    Initializes the webcam video capture object.
+    
+    Returns:
+        cap: The video capture object.
+    """
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
         print("Error: Could not open camera.")
-        exit()
+        cap = None  # or raise an exception
+    return cap
 
-    # Continuously capture frames from the camera
-    while True:
-        ret, frame = capture.read()
+def getFrame(cap):
+    """
+    Retrieves the current frame from the video capture object.
 
-        # If frame is read correctly, ret is True
-        if not ret:
-            print("Error: Can't receive frame (stream end?). Exiting ...")
-            break
+    Args:
+        cap: The video capture object.
 
-        # Display the resulting frame
-        cv2.imshow('Webcam', frame)
+    Returns:
+        frame: The current video frame.
+    """
+    ret, frame = cap.read()
+    if not ret:
+        print("Error: Can't receive frame (stream end?). Exiting ...")
+        return None
+    return frame
 
-        # Break the loop when 'q' is pressed
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+def stopCapture(cap):
+    """
+    Releases the video capture object.
 
-    # When everything done, release the capture
-    capture.release()
-    cv2.destroyAllWindows()
+    Args:
+        cap: The video capture object.
+    """
+    cap.release()
