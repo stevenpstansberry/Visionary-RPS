@@ -38,18 +38,26 @@ def load_images_and_labels(data_dir, images, labels):
 # Load the training data
 load_images_and_labels(train_dir, train_images, train_labels)
 
-# Print the total number of images and labels
-print(f"Total training images: {len(train_images)}")
-print(f"Total training labels: {len(train_labels)}")
+# Convert lists to numpy arrays
+train_images = np.array(train_images)
+train_labels = np.array(train_labels)
 
-# Assert the number of images and labels are the same
-assert len(train_images) == len(train_labels), "The number of images and labels must be the same."
+# Load the test data
+load_images_and_labels(test_dir, test_images, test_labels)
 
-# Print the shape of the first few images and their corresponding labels
-for i in range(2520):  # Just as an example, print out the first 5 images and labels
-    print(f"Image {i} shape: {train_images[i].shape} - Label: {train_labels[i]}")
+# Convert lists to numpy arrays
+test_images = np.array(test_images)
+test_labels = np.array(test_labels)
 
+# Preprocess the data by scaling the pixel values to be between 0 and 1
+train_images = train_images / 255.0
+test_images = test_images / 255.0
 
+# Convert labels to one-hot encoded vectors
+train_labels = to_categorical(train_labels)
+test_labels = to_categorical(test_labels)
 
-
-    
+# Split the training data into training and validation sets
+train_images, val_images, train_labels, val_labels = train_test_split(
+    train_images, train_labels, test_size=0.2, random_state=42
+)
