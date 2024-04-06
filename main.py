@@ -5,6 +5,7 @@ import cv2
 def main():
     capture = webcam_feed.startCapture()
 
+
     if capture is not None:
         while True:
             frame = webcam_feed.getFrame(capture)
@@ -20,7 +21,6 @@ def main():
 
         webcam_feed.stopCapture(capture)
         cv2.destroyAllWindows()
-
 
 if __name__ == '__main__':
     main()
