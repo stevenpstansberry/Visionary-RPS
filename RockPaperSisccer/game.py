@@ -100,6 +100,11 @@ while True:
         else:
             print("Error：can't read the picture. Please try again.")
 
+    #Display computer and player choice
+    if newTime - prevTime < 2:
+        cv2.putText(img, f'{player}', (960, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
+        cv2.putText(img, f'{comp}', (320, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
+        
     # Show fps (blue)
     cTime = time.time()
     fps = 1 / (cTime - pTime)
