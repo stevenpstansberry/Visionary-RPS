@@ -67,6 +67,35 @@ class handDetector():
                 fingers.append(0)
 
         return fingers
+    
+    def rps(self):
+        # Check if the finger is raised
+        moves = ['rock', 'paper', 'scissor']
+        fingers = []
+
+        # Thumb
+        if self.lmList[self.tipIds[0]][1] < self.lmList[self.tipIds[0] - 1][1]:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+
+        # 4 Fingers
+        for id in range(1, 5):
+            if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+        if fingers.count(1) == 0:
+            move = moves[0]
+        elif fingers.count(1) == 5:
+            move = moves[1]
+        elif fingers[1] == 1 and fingers[2] == 1:
+            move = moves[2]
+        else:
+            move = 'invalid'
+
+        return move
 
 
 def main():

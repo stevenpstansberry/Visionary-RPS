@@ -68,16 +68,17 @@ while True:
             x, y = lmList[0][1:]
 
             if 780 < x < 1180 and 160 < y < 560:
-                fingers = detector.fingersUp()
-                totalFingers = fingers.count(1)
+                player = detector.rps()
+                #fingers = detector.fingersUp()
+                #totalFingers = fingers.count(1)
 
                 # Game logic
-                if totalFingers == 0:
-                    player = 'rock'
-                elif totalFingers == 2:
-                    player = 'scissor'
-                elif totalFingers == 5:
-                    player = 'paper'
+                #if totalFingers == 0:
+                #    player = 'rock'
+                #elif totalFingers == 2:
+                #    player = 'scissor'
+                #elif totalFingers == 5:
+                #    player = 'paper'
 
                 comp = moves[random.randint(0, 2)]
 
