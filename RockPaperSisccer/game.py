@@ -57,8 +57,7 @@ while True:
     if waitTime - int(newTime) + int(prevTime) < 0:
         cv2.putText(img, '0', (960, 120), cv2.FONT_HERSHEY_PLAIN, 7, (0, 100, 0), 3)
     else:
-        cv2.putText(img, f'{waitTime - int(newTime) + int(prevTime)}', (960, 120), cv2.FONT_HERSHEY_PLAIN, 7,
-                    (0, 100, 0), 3)
+        cv2.putText(img, f'{waitTime - int(newTime) + int(prevTime)}', (960, 120), cv2.FONT_HERSHEY_PLAIN, 7, (0, 100, 0), 3)
 
     # Hand landmarks obtained, next
     if len(lmList) != 0:
@@ -105,6 +104,14 @@ while True:
     if newTime - prevTime < 2:
         cv2.putText(img, f'{player}', (960, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
         cv2.putText(img, f'{comp}', (320, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
+        if comp == 'rock':
+            s_img = cv2.imread('images/rock.png')
+        elif comp == 'paper':
+            s_img = cv2.imread('images/paper.png')
+        else:
+            s_img = cv2.imread('images/scissors.png')
+        x_offset=y_offset=50
+        img[y_offset:y_offset+s_img.shape[0], x_offset:x_offset+s_img.shape[1]] = s_img
         
     # Show fps (blue)
     cTime = time.time()
