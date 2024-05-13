@@ -110,3 +110,7 @@ while True:
 
     cv2.imshow('Image', img)
     cv2.waitKey(1)
+    
+    # Break the loop when 'q' is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
