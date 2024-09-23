@@ -56,7 +56,7 @@ def show_main_screen():
 
     # Main menu UI with buttons
     global buttons_frame
-    buttons_frame = tk.Frame(app, bg="purple")
+    buttons_frame = tk.Frame(app, bg="#1E213D")
     buttons_frame.pack(pady=20)
 
     start_button = ttk.Button(buttons_frame, text="Start Game", command=start_game)
