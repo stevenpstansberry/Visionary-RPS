@@ -88,17 +88,7 @@ while True:
                 prevTime = time.time()
 
 
-    # Update the image
-    if comp:
-        # read the picture file
-        original_img = cv2.imread(f'images/{comp}.png')
-        if original_img is not None:
-            # Resize image to 400x400 pixels
-            resized_img = cv2.resize(original_img, (400, 400))
-            # Place the resized image into the specified area
-            img[160:560, 120:520] = resized_img
-        else:
-            print("Error：can't read the picture. Please try again.")
+
 
     #Display computer and player choice
     if newTime - prevTime < 2:
