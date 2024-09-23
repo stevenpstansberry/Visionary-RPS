@@ -4,49 +4,59 @@ import HandTrackingModule as htm
 import time
 
 
-def checkWinner(player, comp):
-    # Function to determine the winner based on player and computer moves
-    if player == comp:
+def checkWinner(playerChoice, ComputerChoice):
+    """
+    Determines the winner of the Rock-Paper-Scissors game based on the player's move
+    and the computer's move.
+
+    Args:
+    - player (str): The player's move ('rock', 'paper', or 'scissors').
+    - comp (str): The computer's move ('rock', 'paper', or 'scissors').
+
+    Returns:
+    - int: 0 if the player wins, 1 if the computer wins, None if it's a tie.
+    """
+    if playerChoice == ComputerChoice:
         return None  # Tie
-    elif (player == 'rock' and comp == 'scissors') or \
-         (player == 'paper' and comp == 'rock') or \
-         (player == 'scissors' and comp == 'paper'):
+    elif (playerChoice == 'rock' and ComputerChoice == 'scissors') or \
+         (playerChoice == 'paper' and ComputerChoice == 'rock') or \
+         (playerChoice == 'scissors' and ComputerChoice == 'paper'):
         return 0  # Player wins
     else:
         return 1  # Computer wins
 
 
-# VARIABLES
-waitTime = 4
-moves = ['rock', 'paper', 'scissors']
-scores = [0, 0]  # [player, comp]
-comp, player = None, None
-wCam, hCam = 1280, 720
+# Game configuration and variables
+waitTime = 4  # Time limit for making a move in seconds
+moves = ['rock', 'paper', 'scissors']  # Valid moves in the game
+scores = [0, 0]  # Scoreboard: [player, computer]
+computerChoice, playerChoice = None, None  # Variables to store current moves
+wCam, hCam = 1280, 720  # Webcam resolution (width, height)
 
-# Get feed from carma
+# Initialize webcam feed
 cap = cv2.VideoCapture(0)
 cap.set(3, wCam)
 cap.set(4, hCam)
 
 # Initialize hand detection module
-detector = htm.handDetector(detectionCon=0.8, maxHands=1)
+detector = htm.handDetector(detectionCon=0.8, maxHands=1) # Detect hands with 80% confidence
 
-# Time variables for fps and time limit
-pTime = 0
-prevTime = time.time()
-newTime = time.time()
+# Time variables for frame-per-second (FPS) calculation and game time management
+pTime = 0  # Previous time for FPS calculation
+prevTime = time.time()  # Time when the previous round ended
+newTime = time.time()  # Current time (used for time calculations)
 
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
 
-    # Drawing centre line (purple)
+    # Draw a center line on the screen (for visual effect)
     cv2.line(img, (wCam // 2, 0), (wCam // 2, hCam), (255, 0, 255), 5)
 
-    # Area for input (orange)
+    # Draw a rectangle where the player's hand should be placed
     cv2.rectangle(img, (780, 160), (1180, 560), (0, 165, 255), 2)
 
-    # Scores (red)
+     # Display the current scores on the screen
     cv2.putText(img, f'{scores[1]}', (320, 640), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
     cv2.putText(img, f'{scores[0]}', (960, 640), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
 
@@ -59,51 +69,41 @@ while True:
     else:
         cv2.putText(img, f'{waitTime - int(newTime) + int(prevTime)}', (960, 120), cv2.FONT_HERSHEY_PLAIN, 7, (0, 100, 0), 3)
 
-    # Hand landmarks obtained, next
+    # If hand landmarks are detected
     if len(lmList) != 0:
 
+        # Check if the wait time is over for the player to make a move
         if newTime - prevTime >= waitTime:
 
-            x, y = lmList[0][1:]
+            x, y = lmList[0][1:] # Get the coordinates of the first landmark (wrist)
 
+            # Check if the player's hand is inside the designated input area
             if 780 < x < 1180 and 160 < y < 560:
-                player = detector.rps()
-                #fingers = detector.fingersUp()
-                #totalFingers = fingers.count(1)
+                playerChoice = detector.rps()
 
-                # Game logic
-                #if totalFingers == 0:
-                #    player = 'rock'
-                #elif totalFingers == 2:
-                #    player = 'scissor'
-                #elif totalFingers == 5:
-                #    player = 'paper'
+                computerChoice = moves[random.randint(0, 2)]
 
-                comp = moves[random.randint(0, 2)]
-
-                winner = checkWinner(player, comp)
+                winner = checkWinner(playerChoice, computerChoice)
                 if winner is not None:
                     scores[winner] = scores[winner] + 1
 
                 prevTime = time.time()
 
 
-
-
     #Display computer and player choice
     if newTime - prevTime < 2:
-        cv2.putText(img, f'{player}', (960, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
-        cv2.putText(img, f'{comp}', (320, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
-        if comp == 'rock':
+        cv2.putText(img, f'{playerChoice}', (960, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
+        cv2.putText(img, f'{computerChoice}', (320, 700), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 3)  # Red color
+        if computerChoice == 'rock':
             s_img = cv2.imread('images/rock.png')
-        elif comp == 'paper':
+        elif computerChoice == 'paper':
             s_img = cv2.imread('images/paper.png')
         else:
             s_img = cv2.imread('images/scissors.png')
         x_offset=y_offset=50
         img[y_offset:y_offset+s_img.shape[0], x_offset:x_offset+s_img.shape[1]] = s_img
         
-    # Show fps (blue)
+    # Calculate and display FPS (Frames Per Second)
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
