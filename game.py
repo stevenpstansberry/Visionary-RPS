@@ -49,13 +49,13 @@ def show_main_screen():
     """
     Displays the title, main menu, and buttons on top of the background image.
     """
-    # Set background image (add the correct path to your image)
-    set_background("images/menu.jpg") 
+    # Set background image
+    set_background("images/menu.png") 
 
 
 
     # Main menu UI with buttons
-    buttons_frame = tk.Frame(app, bg="lightgray")
+    buttons_frame = tk.Frame(app, bg="black")
     buttons_frame.pack(pady=20)
 
     start_button = ttk.Button(buttons_frame, text="Start Game", command=start_game)
