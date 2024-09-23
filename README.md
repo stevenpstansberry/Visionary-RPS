@@ -11,11 +11,13 @@ Ensure requirements are fufilled
 
 ## Requirements
 
-* openCV for python is required for gesture recogniton
-* tensorflow is required for acquisition of training sets
+This project requires the following.
+* opencv-python
+* mediapipe
+* Pillow
 
+You can easily install these requirements with the following command
 
 ```sh
-pip3 install opencv-python
-pip3 install tensorflow_datasets
+pip install -r requirements.txt
 ```
