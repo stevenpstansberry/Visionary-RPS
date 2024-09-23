@@ -55,7 +55,8 @@ def show_main_screen():
 
 
     # Main menu UI with buttons
-    buttons_frame = tk.Frame(app, bg="black")
+    global buttons_frame
+    buttons_frame = tk.Frame(app, bg="purple")
     buttons_frame.pack(pady=20)
 
     start_button = ttk.Button(buttons_frame, text="Start Game", command=start_game)
@@ -102,6 +103,23 @@ def start_game():
     """
     global camera_running, cap, prevTime, newTime
 
+    # If the game is running, replace the start button with restart
+    for widget in buttons_frame.winfo_children():
+        widget.destroy()  # Clear the frame for new buttons
+
+        # Create the restart button to reset the game
+    restart_button = ttk.Button(buttons_frame, text="Restart Game", command=lambda: restart_game(buttons_frame))
+    restart_button.grid(row=0, column=0, padx=20, pady=10)
+
+    stop_button = ttk.Button(buttons_frame, text="Stop Game", command=stop_game)
+    stop_button.grid(row=0, column=1, padx=20, pady=10)
+
+    instructions_button = ttk.Button(buttons_frame, text="Instructions", command=show_instructions)
+    instructions_button.grid(row=0, column=2, padx=20, pady=10)
+
+    exit_button = ttk.Button(buttons_frame, text="Exit", command=app.quit)
+    exit_button.grid(row=0, column=3, padx=20, pady=10)    
+
 
     camera_running = True
     cap = cv2.VideoCapture(0)  # Start video capture from the webcam
@@ -110,6 +128,15 @@ def start_game():
     prevTime = time.time()
     newTime = time.time()
     show_frame()  # Begin displaying frames
+
+def restart_game(buttons_frame):
+    """
+    Resets the game, including scores and timer, and starts the game again.
+    """
+    global prevTime, newTime, scores
+    scores = [0, 0]  # Reset scores
+    prevTime = time.time()  # Reset the timer
+    start_game(buttons_frame)  # Restart the game    
 
 def show_frame():
     """
