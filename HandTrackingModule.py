@@ -70,7 +70,7 @@ class handDetector():
     
     def rps(self):
         # Check if the finger is raised
-        moves = ['rock', 'paper', 'scissor']
+        moves = ['rock', 'paper', 'scissors']
         fingers = []
 
         # Thumb

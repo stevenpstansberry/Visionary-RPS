@@ -8,9 +8,9 @@ def checkWinner(player, comp):
     # Function to determine the winner based on player and computer moves
     if player == comp:
         return None  # Tie
-    elif (player == 'rock' and comp == 'scissor') or \
+    elif (player == 'rock' and comp == 'scissors') or \
          (player == 'paper' and comp == 'rock') or \
-         (player == 'scissor' and comp == 'paper'):
+         (player == 'scissors' and comp == 'paper'):
         return 0  # Player wins
     else:
         return 1  # Computer wins
@@ -18,7 +18,7 @@ def checkWinner(player, comp):
 
 # VARIABLES
 waitTime = 4
-moves = ['rock', 'paper', 'scissor']
+moves = ['rock', 'paper', 'scissors']
 scores = [0, 0]  # [player, comp]
 comp, player = None, None
 wCam, hCam = 1280, 720
@@ -91,7 +91,7 @@ while True:
     # Update the image
     if comp:
         # read the picture file
-        original_img = cv2.imread(f'Fingers/{comp}.jpg')
+        original_img = cv2.imread(f'images/{comp}.png')
         if original_img is not None:
             # Resize image to 400x400 pixels
             resized_img = cv2.resize(original_img, (400, 400))
