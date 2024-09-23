@@ -30,16 +30,32 @@ pTime = 0
 prevTime = time.time()
 newTime = time.time()
 
+def set_background(image_path):
+    """
+    Sets a background image for the window.
+    """
+    # Load the background image
+    background_image = Image.open(image_path)
+    background_image = background_image.resize((1280, 720), Image.Resampling.LANCZOS)
+    bg_image_tk = ImageTk.PhotoImage(background_image)
 
-# Main menu and title screen
+    # Create a label to hold the background image
+    bg_label = tk.Label(app, image=bg_image_tk)
+    bg_label.image = bg_image_tk  # Keep a reference to the image to prevent garbage collection
+    bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Place the image to cover the whole window
+
+
 def show_main_screen():
     """
-    Displays the title and main menu elements on the same screen.
+    Displays the title, main menu, and buttons on top of the background image.
     """
+    # Set background image (add the correct path to your image)
+    set_background("images/menu.jpg") 
+
 
 
     # Main menu UI with buttons
-    buttons_frame = tk.Frame(app)
+    buttons_frame = tk.Frame(app, bg="lightgray")
     buttons_frame.pack(pady=20)
 
     start_button = ttk.Button(buttons_frame, text="Start Game", command=start_game)
@@ -53,14 +69,6 @@ def show_main_screen():
 
     exit_button = ttk.Button(buttons_frame, text="Exit", command=app.quit)
     exit_button.grid(row=0, column=3, padx=10)
-
-    # Title and subtitle (stored in global variables to hide later)
-    global title_label, subtitle_label
-    title_label = tk.Label(app, text="Visionary RPS", font=("Arial", 40), fg="blue")
-    title_label.pack(pady=20)
-
-    subtitle_label = tk.Label(app, text="Harness the power of computer vision!", font=("Arial", 20))
-    subtitle_label.pack(pady=10)
 
     # Label to display the video feed
     global video_label
@@ -93,10 +101,6 @@ def start_game():
     Initializes the video capture and starts the game loop.
     """
     global camera_running, cap, prevTime, newTime
-
-    # Hide the title and subtitle when the game starts
-    title_label.pack_forget()
-    subtitle_label.pack_forget()
 
 
     camera_running = True
@@ -202,11 +206,6 @@ def stop_game():
     Stops the game and releases the camera resource.
     """
     global camera_running
-    title_label = tk.Label(app, text="Visionary RPS", font=("Arial", 40), fg="blue")
-    title_label.pack(pady=20)
-
-    subtitle_label = tk.Label(app, text="Harness the power of computer vision!", font=("Arial", 20))
-    subtitle_label.pack(pady=10)
 
     camera_running = False
     cap.release()
