@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 
 # Initialize the main application window
 app = tk.Tk()
-app.title("Rock-Paper-Scissors Game")
+app.title("Visionary RPS")
 app.geometry("1280x720")
 
 # Global variables
@@ -29,6 +29,54 @@ detector = htm.handDetector(detectionCon=0.8, maxHands=1)  # Detect hands with 8
 pTime = 0
 prevTime = time.time()
 newTime = time.time()
+
+# Title screen
+def show_title_screen():
+    """
+    Displays the title screen when the application starts.
+    """
+    title_frame = tk.Frame(app)
+    title_frame.pack(expand=True)
+
+    # Title Label
+    title_label = tk.Label(title_frame, text="Visionary RPS", font=("Arial", 40), fg="blue")
+    title_label.pack(pady=20)
+
+    # Subtitle Label
+    subtitle_label = tk.Label(title_frame, text="Harness the power of computer vision!", font=("Arial", 20))
+    subtitle_label.pack(pady=10)
+
+    # Start button to navigate to the main menu
+    start_button = ttk.Button(title_frame, text="Start", command=lambda: show_main_menu(title_frame))
+    start_button.pack(pady=20)
+
+def show_main_menu(title_frame=None):
+    """
+    Displays the main menu. This function hides the title screen and shows the main menu.
+    """
+    if title_frame:
+        title_frame.pack_forget()  # Hide the title screen
+
+    # Main menu UI
+    buttons_frame = tk.Frame(app)
+    buttons_frame.pack(pady=20)
+
+    start_button = ttk.Button(buttons_frame, text="Start Game", command=start_game)
+    start_button.grid(row=0, column=0, padx=10)
+
+    stop_button = ttk.Button(buttons_frame, text="Stop Game", command=stop_game)
+    stop_button.grid(row=0, column=1, padx=10)
+
+    instructions_button = ttk.Button(buttons_frame, text="Instructions", command=show_instructions)
+    instructions_button.grid(row=0, column=2, padx=10)
+
+    exit_button = ttk.Button(buttons_frame, text="Exit", command=app.quit)
+    exit_button.grid(row=0, column=3, padx=10)
+
+    # Label to display the video feed
+    global video_label
+    video_label = tk.Label(app)
+    video_label.pack()
 
 def checkWinner(playerChoice, computerChoice):
     """
@@ -172,7 +220,7 @@ def show_instructions():
     instructions_text = """
     Welcome to Visonary Rock Paper Scissors!
 
-    Utulize the power of computer vision and  your hand to play the game.  The computer will randomly select a move once the countdown has expired.
+    Use computer vision and hand gestures to play the game. The computer will randomly select a move once the countdown expires.
 
     Instructions:
     - To play 'Rock', make a fist.
@@ -187,25 +235,8 @@ def show_instructions():
     instructions_label = tk.Label(instructions_window, text=instructions_text, justify="left")
     instructions_label.pack(padx=20, pady=20)
 
-# Main menu UI
-buttons_frame = tk.Frame(app)
-buttons_frame.pack(pady=20)
-
-start_button = ttk.Button(buttons_frame, text="Start Game", command=start_game)
-start_button.grid(row=0, column=0, padx=10)
-
-stop_button = ttk.Button(buttons_frame, text="Stop Game", command=stop_game)
-stop_button.grid(row=0, column=1, padx=10)
-
-instructions_button = ttk.Button(buttons_frame, text="Instructions", command=show_instructions)
-instructions_button.grid(row=0, column=2, padx=10)
-
-exit_button = ttk.Button(buttons_frame, text="Exit", command=app.quit)
-exit_button.grid(row=0, column=3, padx=10)
-
-# Label to display the video feed
-video_label = tk.Label(app)
-video_label.pack()
+# Start by displaying the title screen
+show_title_screen()
 
 # Run the application
 app.mainloop()
